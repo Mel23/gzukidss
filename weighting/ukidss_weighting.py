@@ -18,8 +18,8 @@ from astropy.io import ascii
 
 #This code will be run more than once, so log iterations:
 #1st iteration - use unweighted vote table 
-data = ascii.read("/data/lucifer1.1/users/galloway/UKIDSS/csv/2014-06-15_galaxy_zoo_classifications_ukidss_wrong_votes_removed.csv", 'b')
-votes=pyfits.open('/data/lucifer1.1/users/galloway/UKIDSS/weighting/ukidss_classifications_collated_weighted_1_with_headers_for_code.fits')
+data = ascii.read("/home/mel/Documents/UKIDSS_Project/data_files/2014-06-15_galaxy_zoo_classifications_ukidss_wrong_votes_removed.csv", 'b')
+votes=pyfits.open('/home/mel/Documents/UKIDSS_Project/data_files/ukidss_classifications_collated_weighted_1_with_headers_for_code.fits')
 vf=votes[1].data
 users=list(set(data['user']))
 

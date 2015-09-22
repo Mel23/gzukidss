@@ -16,9 +16,9 @@ from astropy.io.fits import Column
 from astropy.io import ascii
 
 print 'reading file...'
-weights=pyfits.open('/data/lucifer1.1/users/galloway/UKIDSS/user_kappa_weights_2.fits')
+weights=pyfits.open('/home/mel/Documents/UKIDSS_Project/weighting/user_kappa_weights_1')
 weight_data=weights[1].data
-data = ascii.read("/data/lucifer1.1/users/galloway/UKIDSS/csv/2014-06-15_galaxy_zoo_classifications_ukidss_wrong_votes_removed.csv")
+data = ascii.read("/home/mel/Documents/UKIDSS_Project/csv/2014-06-15_galaxy_zoo_classifications_ukidss_wrong_votes_removed.csv")
 
 print 'organizing subjects...'
 subjects = set(data['subject_id'])
@@ -207,9 +207,10 @@ questions.remove('ukidss-6')
 #questions.remove('col12')
 #questions=['col6','col7','col8', 'col9','col10','col11','col13','col14','col15','col16','col17']
 dupsubjects=[] #get list of subjects which have duplicates for reference
-for idx,s in enumerate(subjects):
-
-    if idx % 1000 == 0:
+#for idx,s in enumerate(subjects): 
+for idx in range(0,2):
+    s = list(subjects)[idx]
+    if idx % 10 == 0:
         print idx, datetime.datetime.now().strftime('%H:%M:%S.%f')
 
         # Find each classification for this subject
@@ -239,18 +240,27 @@ for idx,s in enumerate(subjects):
                 #if the user is a duplicate person *and* the classification date is not the latest date option, mask the row
                 if row['user']==person and row['created_at']<latestdate:
                     data_this_subj.remove_row(i)
-    
-        # Loop over each question in the tree and record count, vote fractions
+#first calculate weighted count
+    N_total={}
+    for q in questions:
+	N_total[q]=0 
+    for q in questions:
+	for row in data_this_subj:
+		if row[q] is not np.ma.masked:
+			thisuserweight=(weight_data['user']==row['user'])
+			N_total[q]+=weight_data[thisuserweight]['userweight'][0]
+
+
+    # Loop over each question in the tree and record count, vote fractions
     for row in data_this_subj:
         for i,q in enumerate(questions):
             ctr = Counter(data_this_subj[q].compressed())
             thisuserweight=(weight_data['user']==row['user'])
-            N_total = np.sum(ctr.values())-ctr['0']
-            subjDB.data.field(frac_dict[q]['count'])[idx] = N_total
+            subjDB.data.field(frac_dict[q]['count'])[idx] = N_total[q]
             for key in ctr.keys():
                 if row[q]==key:
                     try:
-                        subjDB.data.field(frac_dict[q][key])[idx] += weight_data[thisuserweight]['userweight'][0]/float(N_total) if N_total > 0 else 0.
+                        subjDB.data.field(frac_dict[q][key])[idx] += weight_data[thisuserweight]['userweight'][0]/float(N_total[q]) if N_total > 0 else 0.
                     except KeyError:
                         pass
 
@@ -278,5 +288,5 @@ for idx,s in enumerate(subjects):
 print 'Finished looping over classifications'
     
     # Write final data to FITS file
-subjDB.writeto('ukidss_classifications_collated_weighted_2.fits',clobber=True)
+#subjDB.writeto('ukidss_classifications_collated_weighted_2.fits',clobber=True)
 
