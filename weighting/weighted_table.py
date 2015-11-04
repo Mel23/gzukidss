@@ -16,9 +16,15 @@ from astropy.io.fits import Column
 from astropy.io import ascii
 
 print 'reading file...'
-weights=pyfits.open('/home/mel/Documents/UKIDSS_Project/weighting/user_kappa_weights_1')
+#for lucifer:
+#weights=pyfits.open('/data/lucifer1.1/users/galloway/UKIDSS/user_kappa_weights_2.fits')
+#weight_data=weights[1].data
+#data = ascii.read("/data/lucifer1.1/users/galloway/UKIDSS/csv/2014-06-15_galaxy_zoo_classifications_ukidss_wrong_votes_removed.csv")
+
+#for home comp:
+weights=pyfits.open('user_kappa_weights_2')
 weight_data=weights[1].data
-data = ascii.read("/home/mel/Documents/UKIDSS_Project/csv/2014-06-15_galaxy_zoo_classifications_ukidss_wrong_votes_removed.csv")
+data = ascii.read("/home/mel/Documents/UKIDSS_Project/data_files/2014-06-15_galaxy_zoo_classifications_ukidss_wrong_votes_removed_test.csv")
 
 print 'organizing subjects...'
 subjects = set(data['subject_id'])
@@ -37,7 +43,7 @@ intcolumn = np.zeros(len(subjects),dtype=int)
 floatcolumn = np.zeros(len(subjects),dtype=float)
 strcolumn = np.array([' ']*len(subjects),dtype='S24')
    #S24=24 character string 
-    #c01 = Column(name='num_classifications', format='J', array=floatcolumn)          # c05 = c01, by definition
+    #c01 = Column(name='num_classifications', format='D', array=floatcolumn)          # c05 = c01, by definition
 
 #format for Columns: D = double precision floating point, J = integer
 c01 = Column(name='subject_id', format='A24', array=strcolumn)          # c05 = c01, by definition
@@ -45,29 +51,29 @@ c01 = Column(name='subject_id', format='A24', array=strcolumn)          # c05 = 
 c02 = Column(name='t00_smooth_or_features_a0_smooth_frac_weighted_2', format='D', array=floatcolumn)
 c03 = Column(name='t00_smooth_or_features_a1_features_frac_weighted_2', format='D', array=floatcolumn)
 c04 = Column(name='t00_smooth_or_features_a2_artifact_frac_weighted_2', format='D', array=floatcolumn)
-c05 = Column(name='t00_smooth_or_features_count_weighted_2', format='J', array=intcolumn)
+c05 = Column(name='t00_smooth_or_features_count_weighted_2', format='D', array=floatcolumn)
 
 c06 = Column(name='t01_disk_edge_on_a0_yes_frac_weighted_2', format='D', array=floatcolumn)
 c07 = Column(name='t01_disk_edge_on_a1_no_frac_weighted_2', format='D', array=floatcolumn)
-c08 = Column(name='t01_disk_edge_on_count_weighted_2', format='J', array=intcolumn)
+c08 = Column(name='t01_disk_edge_on_count_weighted_2', format='D', array=floatcolumn)
 
 c09 = Column(name='t02_bar_a0_bar_frac_weighted_2', format='D', array=floatcolumn)
 c10 = Column(name='t02_bar_a1_no_bar_frac_weighted_2', format='D', array=floatcolumn)
-c11 = Column(name='t02_bar_count_weighted_2', format='J', array=intcolumn)
+c11 = Column(name='t02_bar_count_weighted_2', format='D', array=floatcolumn)
 
 c12 = Column(name='t03_spiral_a0_spiral_frac_weighted_2', format='D', array=floatcolumn)
 c13 = Column(name='t03_spiral_a1_no_spiral_frac_weighted_2', format='D', array=floatcolumn)
-c14 = Column(name='t03_spiral_count_weighted_2', format='J', array=intcolumn)
+c14 = Column(name='t03_spiral_count_weighted_2', format='D', array=floatcolumn)
 
 c15 = Column(name='t04_bulge_prominence_a0_no_bulge_frac_weighted_2', format='D', array=floatcolumn)
 c16 = Column(name='t04_bulge_prominence_a1_just_noticeable_frac_weighted_2', format='D', array=floatcolumn)
 c17 = Column(name='t04_bulge_prominence_a2_obvious_frac_weighted_2', format='D', array=floatcolumn)
 c18 = Column(name='t04_bulge_prominence_a3_dominant_frac_weighted_2', format='D', array=floatcolumn)
-c19 = Column(name='t04_bulge_prominence_count_weighted_2', format='J', array=intcolumn)
+c19 = Column(name='t04_bulge_prominence_count_weighted_2', format='D', array=floatcolumn)
 
 c20 = Column(name='t05_odd_a0_yes_frac_weighted_2', format='D', array=floatcolumn)
 c21 = Column(name='t05_odd_a1_no_frac_weighted_2', format='D', array=floatcolumn)
-c22 = Column(name='t05_odd_count_weighted_2', format='J', array=intcolumn)
+c22 = Column(name='t05_odd_count_weighted_2', format='D', array=floatcolumn)
 
 c23 = Column(name='t06_odd_feature_x0_ring_frac_weighted_2', format='D', array=floatcolumn)
 c24 = Column(name='t06_odd_feature_x1_lens_frac_weighted_2', format='D', array=floatcolumn)
@@ -77,22 +83,22 @@ c27 = Column(name='t06_odd_feature_x4_other_frac_weighted_2', format='D', array=
 c28 = Column(name='t06_odd_feature_x5_merger_frac_weighted_2', format='D', array=floatcolumn)
 c29 = Column(name='t06_odd_feature_x6_dustlane_frac_weighted_2', format='D', array=floatcolumn)
 c30 = Column(name='t06_odd_feature_a0_discuss_frac_weighted_2', format='D', array=floatcolumn)
-c31 = Column(name='t06_odd_feature_count_weighted_2', format='J', array=intcolumn)
+c31 = Column(name='t06_odd_feature_count_weighted_2', format='D', array=floatcolumn)
 
 c32 = Column(name='t07_rounded_a0_completely_round_frac_weighted_2', format='D', array=floatcolumn)
 c33 = Column(name='t07_rounded_a1_in_between_frac_weighted_2', format='D', array=floatcolumn)
 c34 = Column(name='t07_rounded_a2_cigar_shaped_frac_weighted_2', format='D', array=floatcolumn)
-c35 = Column(name='t07_rounded_count_weighted_2', format='J', array=intcolumn)
+c35 = Column(name='t07_rounded_count_weighted_2', format='D', array=floatcolumn)
 
 c36 = Column(name='t08_bulge_shape_a0_rounded_frac_weighted_2', format='D', array=floatcolumn)
 c37 = Column(name='t08_bulge_shape_a1_boxy_frac_weighted_2', format='D', array=floatcolumn)
 c38 = Column(name='t08_bulge_shape_a2_no_bulge_frac_weighted_2', format='D', array=floatcolumn)
-c39 = Column(name='t08_bulge_shape_count_weighted_2', format='J', array=intcolumn)
+c39 = Column(name='t08_bulge_shape_count_weighted_2', format='D', array=floatcolumn)
 
 c40 = Column(name='t09_arms_winding_a0_tight_frac_weighted_2', format='D', array=floatcolumn)
 c41 = Column(name='t09_arms_winding_a1_medium_frac_weighted_2', format='D', array=floatcolumn)
 c42 = Column(name='t09_arms_winding_a2_loose_frac_weighted_2', format='D', array=floatcolumn)
-c43 = Column(name='t09_arms_winding_count_weighted_2', format='J', array=intcolumn)
+c43 = Column(name='t09_arms_winding_count_weighted_2', format='D', array=floatcolumn)
 
 c44 = Column(name='t10_arms_number_a0_1_frac_weighted_2', format='D', array=floatcolumn)
 c45 = Column(name='t10_arms_number_a1_2_frac_weighted_2', format='D', array=floatcolumn)
@@ -100,11 +106,11 @@ c46 = Column(name='t10_arms_number_a2_3_frac_weighted_2', format='D', array=floa
 c47 = Column(name='t10_arms_number_a3_4_frac_weighted_2', format='D', array=floatcolumn)
 c48 = Column(name='t10_arms_number_a4_more_than_4_frac_weighted_2', format='D', array=floatcolumn)
 c49 = Column(name='t10_arms_number_a5_cant_tell_frac_weighted_2', format='D', array=floatcolumn)
-c50 = Column(name='t10_arms_number_count_weighted_2', format='J', array=intcolumn)
+c50 = Column(name='t10_arms_number_count_weighted_2', format='D', array=floatcolumn)
 
 c51 = Column(name='t11_discuss_a0_yes_frac_weighted_2', format='D', array=floatcolumn)
 c52 = Column(name='t11_discuss_a1_no_frac_weighted_2', format='D', array=floatcolumn)
-c53 = Column(name='t11_discuss_count_weighted_2', format='J', array=intcolumn)
+c53 = Column(name='t11_discuss_count_weighted_2', format='D', array=floatcolumn)
     
 frac_dict = {
         'ukidss-0':{
@@ -207,10 +213,8 @@ questions.remove('ukidss-6')
 #questions.remove('col12')
 #questions=['col6','col7','col8', 'col9','col10','col11','col13','col14','col15','col16','col17']
 dupsubjects=[] #get list of subjects which have duplicates for reference
-#for idx,s in enumerate(subjects): 
-for idx in range(0,2):
-    s = list(subjects)[idx]
-    if idx % 10 == 0:
+for idx,s in enumerate(subjects):
+    if idx % 1000 == 0:
         print idx, datetime.datetime.now().strftime('%H:%M:%S.%f')
 
         # Find each classification for this subject
@@ -240,18 +244,23 @@ for idx in range(0,2):
                 #if the user is a duplicate person *and* the classification date is not the latest date option, mask the row
                 if row['user']==person and row['created_at']<latestdate:
                     data_this_subj.remove_row(i)
+
 #first calculate weighted count
     N_total={}
     for q in questions:
 	N_total[q]=0 
     for q in questions:
 	for row in data_this_subj:
-		if row[q] is not np.ma.masked:
-			thisuserweight=(weight_data['user']==row['user'])
-			N_total[q]+=weight_data[thisuserweight]['userweight'][0]
+	    if row[q] is not np.ma.masked:
+	    	thisuserweight=(weight_data['user']==row['user'])
+		try:
+			N_total[q]+=weight_data[thisuserweight]['userweight'][0] 
+		except IndexError:
+			N_total[q]+=0
 
 
-    # Loop over each question in the tree and record count, vote fractions
+    
+        # Loop over each question in the tree and record count, vote fractions
     for row in data_this_subj:
         for i,q in enumerate(questions):
             ctr = Counter(data_this_subj[q].compressed())
@@ -260,27 +269,27 @@ for idx in range(0,2):
             for key in ctr.keys():
                 if row[q]==key:
                     try:
-                        subjDB.data.field(frac_dict[q][key])[idx] += weight_data[thisuserweight]['userweight'][0]/float(N_total[q]) if N_total > 0 else 0.
-                    except KeyError:
+                        subjDB.data.field(frac_dict[q][key])[idx] += weight_data[thisuserweight]['userweight'][0]/float(N_total[q]) if N_total[q] > 0 else 0.
+                    except (KeyError,IndexError):
                         pass
 
      #    Question 6 (odd features) is treated differently, since more than one answer can be selected
     
     ctr6 = Counter(data_this_subj['ukidss-6'].compressed())
-    N_total = np.sum(ctr6.values())-ctr['0']
-    subjDB.data.field(frac_dict['ukidss-6']['count'])[idx] = N_total
+    N_total_6 = np.sum(ctr6.values())-ctr['0']
+    subjDB.data.field(frac_dict['ukidss-6']['count'])[idx] = N_total_6
     for key in ctr6.keys():
          strkey = str(key)
          splitkey = strkey.split(';')
          if len(splitkey) > 1:
              for sk in splitkey:
                  try:
-                     subjDB.data.field(frac_dict['ukidss-6'][sk])[idx] += ctr6[strkey]/float(N_total) if N_total > 0 else 0.
+                     subjDB.data.field(frac_dict['ukidss-6'][sk])[idx] += ctr6[strkey]/float(N_total_6) if N_total_6 > 0 else 0.
                  except KeyError:
                      pass
          else:
              try:
-                 subjDB.data.field(frac_dict['ukidss-6'][key])[idx] = ctr6[key]/float(N_total) if N_total > 0 else 0.
+                 subjDB.data.field(frac_dict['ukidss-6'][key])[idx] = ctr6[key]/float(N_total_6) if N_total_6 > 0 else 0.
              except KeyError:
                  pass
       
@@ -288,5 +297,5 @@ for idx in range(0,2):
 print 'Finished looping over classifications'
     
     # Write final data to FITS file
-#subjDB.writeto('ukidss_classifications_collated_weighted_2.fits',clobber=True)
+subjDB.writeto('ukidss_classifications_collated_weighted_smalltest.fits',clobber=True)
 
