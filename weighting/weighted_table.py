@@ -17,14 +17,14 @@ from astropy.io import ascii
 
 print 'reading file...'
 #for lucifer:
-#weights=pyfits.open('/data/lucifer1.1/users/galloway/UKIDSS/user_kappa_weights_2.fits')
-#weight_data=weights[1].data
-#data = ascii.read("/data/lucifer1.1/users/galloway/UKIDSS/csv/2014-06-15_galaxy_zoo_classifications_ukidss_wrong_votes_removed.csv")
+weights=pyfits.open('/data/lucifer1.1/users/galloway/UKIDSS/weighting_round_2/user_kappa_weights_2.fits')
+weight_data=weights[1].data
+data = ascii.read("/data/lucifer1.1/users/galloway/UKIDSS/csv/2014-06-15_galaxy_zoo_classifications_ukidss_wrong_votes_removed.csv")
 
 #for home comp:
-weights=pyfits.open('user_kappa_weights_2')
-weight_data=weights[1].data
-data = ascii.read("/home/mel/Documents/UKIDSS_Project/data_files/2014-06-15_galaxy_zoo_classifications_ukidss_wrong_votes_removed_test.csv")
+#weights=pyfits.open('user_kappa_weights_2.fits')
+#weight_data=weights[1].data
+#data = ascii.read("2014-06-15_galaxy_zoo_classifications_ukidss_wrong_votes_removed_test.csv")
 
 print 'organizing subjects...'
 subjects = set(data['subject_id'])
@@ -297,5 +297,5 @@ for idx,s in enumerate(subjects):
 print 'Finished looping over classifications'
     
     # Write final data to FITS file
-subjDB.writeto('ukidss_classifications_collated_weighted_smalltest.fits',clobber=True)
+subjDB.writeto('ukidss_classifications_collated_weighted_2.fits',clobber=True)
 
